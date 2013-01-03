@@ -54,8 +54,9 @@
 			this.forceParse = this.element.data('date-force-parse');
 		}
 
-
-        this.picker = $(DPGlobal.template)
+        this.pickLeft = this.element.is(".pick-left");
+        
+        this.picker = $(DPGlobal.template( this.pickLeft ))
                             .appendTo(this.isInline ? this.element : 'body')
                             .on({
                                 click: $.proxy(this.click, this),
@@ -298,7 +299,7 @@
 			var offset = this.component ? this.component.offset() : this.element.offset();
 			this.picker.css({
 				top: offset.top + this.height,
-				left: offset.left,
+				left: ( this.pickLeft ? offset.left - 202 : offset.left ),
 				zIndex: zIndex
 			});
 		},
@@ -931,29 +932,32 @@
 		contTemplate: '<tbody><tr><td colspan="7"></td></tr></tbody>',
 		footTemplate: '<tfoot><tr><th colspan="7" class="today"></th></tr></tfoot>'
 	};
-	DPGlobal.template = '<div class="datepicker">'+
-							'<div class="datepicker-days">'+
-								'<table class=" table-condensed">'+
-									DPGlobal.headTemplate+
-									'<tbody></tbody>'+
-									DPGlobal.footTemplate+
-								'</table>'+
-							'</div>'+
-							'<div class="datepicker-months">'+
-								'<table class="table-condensed">'+
-									DPGlobal.headTemplate+
-									DPGlobal.contTemplate+
-									DPGlobal.footTemplate+
-								'</table>'+
-							'</div>'+
-							'<div class="datepicker-years">'+
-								'<table class="table-condensed">'+
-									DPGlobal.headTemplate+
-									DPGlobal.contTemplate+
-									DPGlobal.footTemplate+
-								'</table>'+
-							'</div>'+
-						'</div>';
+	DPGlobal.template = function( pickLeft ){
+        return '<div class="datepicker'+
+            ( pickLeft ? ' pick-left' : '' ) + '">'+
+			'<div class="datepicker-days">'+
+				'<table class=" table-condensed">'+
+					DPGlobal.headTemplate+
+					'<tbody></tbody>'+
+					DPGlobal.footTemplate+
+				'</table>'+
+			'</div>'+
+			'<div class="datepicker-months">'+
+				'<table class="table-condensed">'+
+					DPGlobal.headTemplate+
+					DPGlobal.contTemplate+
+					DPGlobal.footTemplate+
+				'</table>'+
+			'</div>'+
+			'<div class="datepicker-years">'+
+				'<table class="table-condensed">'+
+					DPGlobal.headTemplate+
+					DPGlobal.contTemplate+
+					DPGlobal.footTemplate+
+				'</table>'+
+			'</div>'+
+		'</div>';
+	}
 
     $.fn.datepicker.DPGlobal = DPGlobal;
 
